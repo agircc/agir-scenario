@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "AGIR Scenario Manager",
-  description: "Manage your AGIR workflow scenarios",
+  title: "Agentic Scenarios Manager",
+  description: "Manage your agentic scenarios",
 }
 
 export default function RootLayout({
