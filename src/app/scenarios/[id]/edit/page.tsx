@@ -67,7 +67,7 @@ export default function EditScenarioPage({
   }
 
   if (!session?.user) {
-    redirect('/auth/signin')
+    redirect('/')
   }
 
   const handleSave = async () => {

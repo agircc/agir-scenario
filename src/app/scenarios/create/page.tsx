@@ -57,7 +57,7 @@ export default function CreateScenarioPage() {
   }
 
   if (!session?.user) {
-    redirect('/auth/signin')
+    redirect('/')
   }
 
   const handleSave = async () => {

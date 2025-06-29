@@ -56,7 +56,7 @@ export default async function ScenarioDetailPage({
   const session = await auth()
 
   if (!session?.user?.id) {
-    redirect('/auth/signin')
+    redirect('/')
   }
 
   const { id } = await params
