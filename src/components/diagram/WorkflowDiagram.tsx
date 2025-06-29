@@ -74,7 +74,7 @@ export default function WorkflowDiagram({ scenario }: WorkflowDiagramProps) {
     }
 
     // Find the first node (stepNumber = 1)
-    const firstNode = initialNodes.find(node => node.data?.stepNumber === 1)
+    const firstNode = initialNodes.find((node) => node.data?.stepNumber === 1)
     if (!firstNode) {
       return { x: 0, y: 0, zoom: 0.9 }
     }
@@ -84,7 +84,7 @@ export default function WorkflowDiagram({ scenario }: WorkflowDiagramProps) {
     const containerWidth = 600 // Approximate container width
     const topPadding = 50 // Desired padding from top
 
-    const x = (containerWidth / 2) - firstNode.position.x
+    const x = containerWidth / 2 - firstNode.position.x
     const y = topPadding - firstNode.position.y
 
     return { x, y, zoom: 0.9 }
@@ -119,7 +119,12 @@ export default function WorkflowDiagram({ scenario }: WorkflowDiagramProps) {
         preventScrolling={true}
       >
         <Controls />
-        <Background variant={BackgroundVariant.Dots} gap={25} size={1.5} color="#cbd5e1" />
+        <Background
+          variant={BackgroundVariant.Dots}
+          gap={25}
+          size={1.5}
+          color="#cbd5e1"
+        />
       </ReactFlow>
     </div>
   )

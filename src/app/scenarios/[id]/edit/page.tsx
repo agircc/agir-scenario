@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
@@ -86,7 +86,7 @@ export default function EditScenarioPage({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          yamlContent
+          yamlContent,
         }),
       })
 
@@ -108,7 +108,11 @@ export default function EditScenarioPage({
   }
 
   const handleDelete = async () => {
-    if (!window.confirm('Are you sure you want to delete this scenario? This action cannot be undone.')) {
+    if (
+      !window.confirm(
+        'Are you sure you want to delete this scenario? This action cannot be undone.'
+      )
+    ) {
       return
     }
 
@@ -117,7 +121,7 @@ export default function EditScenarioPage({
 
     try {
       const response = await fetch(`/api/scenarios/${scenarioId}`, {
-        method: 'DELETE'
+        method: 'DELETE',
       })
 
       if (response.ok) {
@@ -178,7 +182,9 @@ export default function EditScenarioPage({
               <div className="mt-2 p-3 bg-red-50 border border-red-200 rounded-md">
                 <div className="flex items-center">
                   <AlertCircle className="h-4 w-4 text-red-600 mr-2" />
-                  <p className="text-sm font-medium text-red-800">Validation Errors:</p>
+                  <p className="text-sm font-medium text-red-800">
+                    Validation Errors:
+                  </p>
                 </div>
                 <ul className="mt-1 text-sm text-red-700 list-disc list-inside">
                   {validationErrors.map((error, index) => (
@@ -215,10 +221,7 @@ export default function EditScenarioPage({
               >
                 Cancel
               </Button>
-              <Button
-                onClick={handleSave}
-                disabled={isSubmitting || !isValid}
-              >
+              <Button onClick={handleSave} disabled={isSubmitting || !isValid}>
                 {isSubmitting ? 'Saving...' : 'Save Changes'}
               </Button>
             </div>
@@ -227,4 +230,4 @@ export default function EditScenarioPage({
       </div>
     </div>
   )
-} 
+}

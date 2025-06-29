@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -85,7 +85,7 @@ export default function CreateScenarioPage() {
         },
         body: JSON.stringify({
           yamlContent,
-          filename: processedFilename
+          filename: processedFilename,
         }),
       })
 
@@ -131,7 +131,8 @@ export default function CreateScenarioPage() {
               className="mt-2"
             />
             <p className="mt-1 text-sm text-gray-500">
-              This will be used as the unique identifier for your scenario. Spaces will be automatically replaced with hyphens (-).
+              This will be used as the unique identifier for your scenario.
+              Spaces will be automatically replaced with hyphens (-).
             </p>
           </div>
 
@@ -154,7 +155,9 @@ export default function CreateScenarioPage() {
               <div className="mt-2 p-3 bg-red-50 border border-red-200 rounded-md">
                 <div className="flex items-center">
                   <AlertCircle className="h-4 w-4 text-red-600 mr-2" />
-                  <p className="text-sm font-medium text-red-800">Validation Errors:</p>
+                  <p className="text-sm font-medium text-red-800">
+                    Validation Errors:
+                  </p>
                 </div>
                 <ul className="mt-1 text-sm text-red-700 list-disc list-inside">
                   {validationErrors.map((error, index) => (
@@ -193,4 +196,4 @@ export default function CreateScenarioPage() {
       </div>
     </div>
   )
-} 
+}

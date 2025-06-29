@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -122,15 +122,15 @@
 
   /* Add cursor pointer to interactive elements */
   button,
-    [role="button"],
-    [data-slot="button"],
-    [data-slot="select-trigger"],
-    [data-slot="tabs-trigger"],
-    [type="button"],
-    [type="reset"],
-    [type="submit"],
-    select,
-    option {
-      @apply cursor-pointer;
+  [role='button'],
+  [data-slot='button'],
+  [data-slot='select-trigger'],
+  [data-slot='tabs-trigger'],
+  [type='button'],
+  [type='reset'],
+  [type='submit'],
+  select,
+  option {
+    @apply cursor-pointer;
   }
 }

@@ -7,7 +7,7 @@ export interface LayoutResult {
 
 // Hierarchical layout algorithm that follows workflow sequence
 export function createHierarchicalLayout(
-  states: State[], 
+  states: State[],
   transitions: { from: string; to: string; condition?: string }[]
 ): LayoutResult {
   // Build adjacency list from transitions
@@ -15,13 +15,13 @@ export function createHierarchicalLayout(
   const incomingCount = new Map<string, number>()
 
   // Initialize
-  states.forEach(state => {
+  states.forEach((state) => {
     adjacencyList.set(state.name, [])
     incomingCount.set(state.name, 0)
   })
 
   // Build graph
-  transitions.forEach(transition => {
+  transitions.forEach((transition) => {
     const fromState = transition.from
     const toState = transition.to
 
@@ -32,7 +32,9 @@ export function createHierarchicalLayout(
   })
 
   // Find root nodes (nodes with no incoming edges)
-  const rootNodes = states.filter(state => incomingCount.get(state.name) === 0)
+  const rootNodes = states.filter(
+    (state) => incomingCount.get(state.name) === 0
+  )
 
   // If no clear root, use first state
   if (rootNodes.length === 0) {
@@ -59,16 +61,16 @@ export function createHierarchicalLayout(
 
     // Process children
     const children = adjacencyList.get(nodeName) || []
-    children.forEach(child => {
+    children.forEach((child) => {
       assignLevels(child, level + 1)
     })
   }
 
   // Start from root nodes
-  rootNodes.forEach(root => assignLevels(root.name, 0))
+  rootNodes.forEach((root) => assignLevels(root.name, 0))
 
   // Handle any remaining unvisited nodes
-  states.forEach(state => {
+  states.forEach((state) => {
     if (!visited.has(state.name)) {
       const level = Math.max(...Array.from(nodeLevel.values())) + 1
       assignLevels(state.name, level)
@@ -97,4 +99,4 @@ export function createSimpleSequentialLayout(states: State[]): LayoutResult {
   }
 
   return { levels, nodeLevel }
-} 
+}

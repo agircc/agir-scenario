@@ -1,11 +1,7 @@
 'use client'
 
 import React from 'react'
-import {
-  BaseEdge,
-  getSmoothStepPath,
-  EdgeProps,
-} from '@xyflow/react'
+import { BaseEdge, getSmoothStepPath, EdgeProps } from '@xyflow/react'
 
 // Custom Edge with animated moving dot along the path
 export const AnimatedWorkflowEdge = ({
@@ -17,7 +13,7 @@ export const AnimatedWorkflowEdge = ({
   sourcePosition,
   targetPosition,
   style = {},
-  markerEnd
+  markerEnd,
 }: EdgeProps) => {
   const [edgePath] = getSmoothStepPath({
     sourceX,
@@ -37,4 +33,4 @@ export const AnimatedWorkflowEdge = ({
       </circle>
     </>
   )
-} 
+}

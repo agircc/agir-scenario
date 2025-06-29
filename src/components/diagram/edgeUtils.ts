@@ -21,7 +21,7 @@ export function createEdges(
     }
 
     const hasCondition = !!transition.condition
-    const isBackwardFlow = (toIndex < fromIndex) // Detect backward/loop transitions
+    const isBackwardFlow = toIndex < fromIndex // Detect backward/loop transitions
 
     edges.push({
       id: `edge-${index}`,
@@ -30,33 +30,45 @@ export function createEdges(
       type: 'animated',
       animated: true,
       style: {
-        stroke: hasCondition ? (isBackwardFlow ? '#f59e0b' : '#8b5cf6') : '#3b82f6',
+        stroke: hasCondition
+          ? isBackwardFlow
+            ? '#f59e0b'
+            : '#8b5cf6'
+          : '#3b82f6',
         strokeWidth: 2,
         strokeDasharray: hasCondition ? '8,4' : '12,6',
       },
       markerEnd: {
         type: MarkerType.ArrowClosed,
-        color: hasCondition ? (isBackwardFlow ? '#f59e0b' : '#8b5cf6') : '#3b82f6',
+        color: hasCondition
+          ? isBackwardFlow
+            ? '#f59e0b'
+            : '#8b5cf6'
+          : '#3b82f6',
         width: 12,
         height: 12,
       },
       label: transition.condition || undefined,
-      labelStyle: hasCondition ? {
-        fontSize: '11px',
-        fontWeight: '600',
-        fill: isBackwardFlow ? '#f59e0b' : '#8b5cf6',
-        backgroundColor: 'rgba(255, 255, 255, 0.95)',
-        padding: '4px 8px',
-        borderRadius: '4px',
-        border: `1px solid ${isBackwardFlow ? '#f59e0b' : '#8b5cf6'}`,
-        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
-      } : undefined,
-      labelBgStyle: hasCondition ? {
-        fill: 'rgba(255, 255, 255, 0.95)',
-        fillOpacity: 0.95,
-      } : undefined
+      labelStyle: hasCondition
+        ? {
+            fontSize: '11px',
+            fontWeight: '600',
+            fill: isBackwardFlow ? '#f59e0b' : '#8b5cf6',
+            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            padding: '4px 8px',
+            borderRadius: '4px',
+            border: `1px solid ${isBackwardFlow ? '#f59e0b' : '#8b5cf6'}`,
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+          }
+        : undefined,
+      labelBgStyle: hasCondition
+        ? {
+            fill: 'rgba(255, 255, 255, 0.95)',
+            fillOpacity: 0.95,
+          }
+        : undefined,
     })
   })
 
   return edges
-} 
+}

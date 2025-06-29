@@ -26,9 +26,11 @@ async function getScenarios(userId: string): Promise<ScenarioSummary[]> {
         description: 1,
         filename: 1,
         createdAt: 1,
-        updatedAt: 1
+        updatedAt: 1,
       }
-    ).sort({ updatedAt: -1 }).lean()
+    )
+      .sort({ updatedAt: -1 })
+      .lean()
 
     return scenarios.map((scenario) => ({
       id: scenario.filename,
@@ -36,7 +38,7 @@ async function getScenarios(userId: string): Promise<ScenarioSummary[]> {
       description: scenario.description || 'No description available',
       filename: scenario.filename,
       createdAt: scenario.createdAt,
-      updatedAt: scenario.updatedAt
+      updatedAt: scenario.updatedAt,
     }))
   } catch (error) {
     console.error('Error reading scenarios from MongoDB:', error)
@@ -79,7 +81,8 @@ export default async function ScenariosPage() {
               No Scenarios Found
             </h2>
             <p className="text-gray-500 mb-6">
-              You haven&apos;t created any scenarios yet. Create your first scenario to get started.
+              You haven&apos;t created any scenarios yet. Create your first
+              scenario to get started.
             </p>
             <Button asChild>
               <Link href="/scenarios/create">

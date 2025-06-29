@@ -13,4 +13,4 @@ declare global {
       NEXTAUTH_URL: string
     }
   }
-} 
+}

@@ -7,12 +7,15 @@ import ScenarioTabs from './ScenarioTabs'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, Edit } from 'lucide-react'
 
-async function getScenario(id: string, userId: string): Promise<IScenario | null> {
+async function getScenario(
+  id: string,
+  userId: string
+): Promise<IScenario | null> {
   try {
     await connectDB()
     const scenario = await Scenario.findOne({
       filename: id,
-      userId: userId
+      userId: userId,
     }).lean()
     return scenario as IScenario | null
   } catch (error) {
@@ -27,7 +30,7 @@ export async function generateStaticParams() {
     const scenarios = await Scenario.find({}, { filename: 1 }).lean()
 
     return scenarios.map((scenario) => ({
-      id: scenario.filename
+      id: scenario.filename,
     }))
   } catch (error) {
     console.error('Error generating static params:', error)
@@ -44,7 +47,7 @@ function serializeScenario(scenario: IScenario): IScenario {
     states: scenario.states,
     transitions: scenario.transitions || [],
     filename: scenario.filename,
-    userId: scenario.userId
+    userId: scenario.userId,
   }
 }
 
@@ -102,4 +105,4 @@ export default async function ScenarioDetailPage({
       </div>
     </div>
   )
-} 
+}

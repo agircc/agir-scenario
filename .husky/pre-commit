@@ -1,1 +1,14 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Format code with Prettier
+npm run format
+
+# Run ESLint
 npm run lint
+
+# Check if there are any changes after formatting
+if [ -n "$(git diff --name-only)" ]; then
+  echo "Code was formatted. Please review and stage the changes."
+  exit 1
+fi

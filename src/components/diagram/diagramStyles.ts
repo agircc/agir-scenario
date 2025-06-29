@@ -39,4 +39,4 @@ export const flowingAnimationCSS = `
   transform: scale(1.05);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
-` 
+`

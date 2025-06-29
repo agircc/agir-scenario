@@ -1,20 +1,21 @@
-import NextAuth from "next-auth"
-import CredentialsProvider from "next-auth/providers/credentials"
-import { MongoDBAdapter } from "@auth/mongodb-adapter"
-import { MongoClient } from "mongodb"
-import bcrypt from "bcryptjs"
+import NextAuth from 'next-auth'
+import CredentialsProvider from 'next-auth/providers/credentials'
+import { MongoDBAdapter } from '@auth/mongodb-adapter'
+import { MongoClient } from 'mongodb'
+import bcrypt from 'bcryptjs'
 
-const mongoUri = process.env.MONGODB_URI || "mongodb://localhost:27017/agentic-scenario"
+const mongoUri =
+  process.env.MONGODB_URI || 'mongodb://localhost:27017/agentic-scenario'
 const client = new MongoClient(mongoUri)
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: MongoDBAdapter(client),
   providers: [
     CredentialsProvider({
-      name: "credentials",
+      name: 'credentials',
       credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" }
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
@@ -24,8 +25,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         try {
           await client.connect()
           const db = client.db()
-          const user = await db.collection("users").findOne({
-            email: credentials.email
+          const user = await db.collection('users').findOne({
+            email: credentials.email,
           })
 
           if (!user) {
@@ -47,17 +48,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             name: user.name,
           }
         } catch (error) {
-          console.error("Authentication error:", error)
+          console.error('Authentication error:', error)
           return null
         }
-      }
-    })
+      },
+    }),
   ],
   session: {
-    strategy: "jwt",
+    strategy: 'jwt',
   },
   pages: {
-    signIn: "/auth/signin",
+    signIn: '/auth/signin',
   },
   callbacks: {
     async redirect({ url, baseUrl }) {
@@ -66,7 +67,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return `${baseUrl}/scenarios`
       }
       // Allow relative callback URLs
-      if (url.startsWith("/")) {
+      if (url.startsWith('/')) {
         return `${baseUrl}${url}`
       }
       // Allow callback URLs on the same origin
@@ -88,4 +89,4 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session
     },
   },
-}) 
+})

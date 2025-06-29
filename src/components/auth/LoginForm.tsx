@@ -1,10 +1,10 @@
-"use client"
+'use client'
 
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import {
   Form,
   FormControl,
@@ -12,12 +12,12 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Loader2 } from "lucide-react"
+} from '@/components/ui/form'
+import { Loader2 } from 'lucide-react'
 
 const loginSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(1, "Password is required"),
+  email: z.string().email('Please enter a valid email address'),
+  password: z.string().min(1, 'Password is required'),
 })
 
 type LoginFormData = z.infer<typeof loginSchema>
@@ -29,21 +29,23 @@ interface LoginFormProps {
   initialEmail?: string
 }
 
-export function LoginForm({ onSubmit, loading = false, error, initialEmail }: LoginFormProps) {
+export function LoginForm({
+  onSubmit,
+  loading = false,
+  error,
+  initialEmail,
+}: LoginFormProps) {
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: initialEmail || "",
-      password: "",
+      email: initialEmail || '',
+      password: '',
     },
   })
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="mt-8 space-y-6"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 space-y-6">
         <div className="space-y-4">
           <FormField
             control={form.control}
@@ -87,26 +89,24 @@ export function LoginForm({ onSubmit, loading = false, error, initialEmail }: Lo
         </div>
 
         {error && (
-          <div className={`text-sm text-center ${error === "Registration successful! Please sign in."
-            ? "text-green-600"
-            : "text-red-600"
-            }`}>
+          <div
+            className={`text-sm text-center ${
+              error === 'Registration successful! Please sign in.'
+                ? 'text-green-600'
+                : 'text-red-600'
+            }`}
+          >
             {error}
           </div>
         )}
 
-        <Button
-          type="submit"
-          disabled={loading}
-          className="w-full"
-          size="lg"
-        >
+        <Button type="submit" disabled={loading} className="w-full" size="lg">
           {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {loading ? "Signing in..." : "Sign in"}
+          {loading ? 'Signing in...' : 'Sign in'}
         </Button>
       </form>
     </Form>
   )
 }
 
-export type { LoginFormData } 
+export type { LoginFormData }

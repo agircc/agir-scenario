@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { useRef } from 'react'
 import Editor from '@monaco-editor/react'
@@ -15,9 +15,9 @@ interface YamlEditorProps {
 export default function YamlEditor({
   value,
   onChange,
-  height = "400px",
+  height = '400px',
   readOnly = false,
-  onValidationChange
+  onValidationChange,
 }: YamlEditorProps) {
   const editorRef = useRef<unknown>(null)
 
@@ -28,7 +28,10 @@ export default function YamlEditor({
     const monacoEditor = monaco as {
       languages: {
         setLanguageConfiguration: (language: string, config: unknown) => void
-        registerDocumentFormattingEditProvider: (language: string, provider: unknown) => void
+        registerDocumentFormattingEditProvider: (
+          language: string,
+          provider: unknown
+        ) => void
       }
     }
 
@@ -36,42 +39,47 @@ export default function YamlEditor({
       brackets: [
         ['{', '}'],
         ['[', ']'],
-        ['(', ')']
+        ['(', ')'],
       ],
       autoClosingPairs: [
         { open: '{', close: '}' },
         { open: '[', close: ']' },
         { open: '(', close: ')' },
         { open: '"', close: '"' },
-        { open: "'", close: "'" }
+        { open: "'", close: "'" },
       ],
       surroundingPairs: [
         { open: '{', close: '}' },
         { open: '[', close: ']' },
         { open: '(', close: ')' },
         { open: '"', close: '"' },
-        { open: "'", close: "'" }
-      ]
+        { open: "'", close: "'" },
+      ],
     })
 
     // Add YAML validation
     monacoEditor.languages.registerDocumentFormattingEditProvider('yaml', {
-      provideDocumentFormattingEdits: function (model: { getValue: () => string; getFullModelRange: () => unknown }) {
+      provideDocumentFormattingEdits: function (model: {
+        getValue: () => string
+        getFullModelRange: () => unknown
+      }) {
         try {
           const parsed = yaml.load(model.getValue())
           const formatted = yaml.dump(parsed, {
             indent: 2,
             lineWidth: 120,
-            quotingType: '"'
+            quotingType: '"',
           })
-          return [{
-            range: model.getFullModelRange(),
-            text: formatted
-          }]
+          return [
+            {
+              range: model.getFullModelRange(),
+              text: formatted,
+            },
+          ]
         } catch {
           return []
         }
-      }
+      },
     })
   }
 
@@ -85,7 +93,8 @@ export default function YamlEditor({
         yaml.load(newValue)
         onValidationChange(true, [])
       } catch (error: unknown) {
-        const errorMessage = error instanceof Error ? error.message : 'Unknown YAML error'
+        const errorMessage =
+          error instanceof Error ? error.message : 'Unknown YAML error'
         onValidationChange(false, [errorMessage])
       }
     }
@@ -111,9 +120,9 @@ export default function YamlEditor({
           tabSize: 2,
           insertSpaces: true,
           formatOnPaste: true,
-          formatOnType: true
+          formatOnType: true,
         }}
       />
     </div>
   )
-} 
+}
