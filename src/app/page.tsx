@@ -3,63 +3,17 @@
 import { useState, useEffect } from "react"
 import { signIn, useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
 import { Loader2 } from "lucide-react"
-
-const loginSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(1, "Password is required"),
-})
-
-const registerSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  confirmPassword: z.string().min(1, "Please confirm your password"),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
-})
-
-type LoginFormData = z.infer<typeof loginSchema>
-type RegisterFormData = z.infer<typeof registerSchema>
+import { LoginForm, RegisterForm, type LoginFormData, type RegisterFormData } from "@/components/auth"
 
 export default function HomePage() {
   const { data: session, status } = useSession()
   const [isLogin, setIsLogin] = useState(true)
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
+  const [registeredEmail, setRegisteredEmail] = useState("")
   const router = useRouter()
-
-  const loginForm = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  })
-
-  const registerForm = useForm<RegisterFormData>({
-    resolver: zodResolver(registerSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    },
-  })
 
   useEffect(() => {
     if (status === 'authenticated' && session?.user) {
@@ -123,11 +77,9 @@ export default function HomePage() {
       })
 
       if (response.ok) {
-        setError("")
-        setIsLogin(true)
-        registerForm.reset()
-        loginForm.setValue("email", data.email)
         setError("Registration successful! Please sign in.")
+        setRegisteredEmail(data.email)
+        setIsLogin(true)
       } else {
         const responseData = await response.json()
         setError(responseData.message || "Registration failed")
@@ -143,8 +95,9 @@ export default function HomePage() {
     setIsLogin(!isLogin)
     setError("")
     setLoading(false)
-    loginForm.reset()
-    registerForm.reset()
+    if (!isLogin) {
+      setRegisteredEmail("")
+    }
   }
 
   return (
@@ -168,188 +121,18 @@ export default function HomePage() {
         </div>
 
         {isLogin ? (
-          <Form {...loginForm}>
-            <form
-              key="login-form"
-              onSubmit={loginForm.handleSubmit(handleLogin)}
-              className="mt-8 space-y-6"
-            >
-              <div className="space-y-4">
-                <FormField
-                  key="login-email"
-                  control={loginForm.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email address</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          type="email"
-                          autoComplete="email"
-                          disabled={loading}
-                          placeholder="Enter your email"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  key="login-password"
-                  control={loginForm.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Password</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          type="password"
-                          autoComplete="current-password"
-                          disabled={loading}
-                          placeholder="Enter your password"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              {error && (
-                <div className={`text-sm text-center ${error === "Registration successful! Please sign in."
-                  ? "text-green-600"
-                  : "text-red-600"
-                  }`}>
-                  {error}
-                </div>
-              )}
-
-              <Button
-                type="submit"
-                disabled={loading}
-                className="w-full"
-                size="lg"
-              >
-                {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                {loading ? "Signing in..." : "Sign in"}
-              </Button>
-            </form>
-          </Form>
+          <LoginForm
+            onSubmit={handleLogin}
+            loading={loading}
+            error={error}
+            initialEmail={registeredEmail}
+          />
         ) : (
-          <Form {...registerForm}>
-            <form
-              key="register-form"
-              onSubmit={registerForm.handleSubmit(handleRegister)}
-              className="mt-8 space-y-6"
-            >
-              <div className="space-y-4">
-                <FormField
-                  key="register-name"
-                  control={registerForm.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Full name</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          type="text"
-                          disabled={loading}
-                          placeholder="Enter your full name"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  key="register-email"
-                  control={registerForm.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email address</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          type="email"
-                          autoComplete="email"
-                          disabled={loading}
-                          placeholder="Enter your email"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  key="register-password"
-                  control={registerForm.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Password</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          type="password"
-                          autoComplete="new-password"
-                          disabled={loading}
-                          placeholder="Enter your password"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  key="register-confirmPassword"
-                  control={registerForm.control}
-                  name="confirmPassword"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Confirm password</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          type="password"
-                          autoComplete="new-password"
-                          disabled={loading}
-                          placeholder="Confirm your password"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              {error && (
-                <div className={`text-sm text-center ${error === "Registration successful! Please sign in."
-                  ? "text-green-600"
-                  : "text-red-600"
-                  }`}>
-                  {error}
-                </div>
-              )}
-
-              <Button
-                type="submit"
-                disabled={loading}
-                className="w-full"
-                size="lg"
-              >
-                {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                {loading ? "Creating account..." : "Create account"}
-              </Button>
-            </form>
-          </Form>
+          <RegisterForm
+            onSubmit={handleRegister}
+            loading={loading}
+            error={error}
+          />
         )}
       </div>
     </div>
