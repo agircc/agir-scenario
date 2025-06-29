@@ -74,6 +74,9 @@ export default function CreateScenarioPage() {
     setIsSubmitting(true)
     setError('')
 
+    // Process filename: trim and replace spaces with hyphens
+    const processedFilename = filename.trim().replace(/\s+/g, '-')
+
     try {
       const response = await fetch('/api/scenarios', {
         method: 'POST',
@@ -82,7 +85,7 @@ export default function CreateScenarioPage() {
         },
         body: JSON.stringify({
           yamlContent,
-          filename: filename.trim()
+          filename: processedFilename
         }),
       })
 
@@ -128,7 +131,7 @@ export default function CreateScenarioPage() {
               className="mt-2"
             />
             <p className="mt-1 text-sm text-gray-500">
-              This will be used as the unique identifier for your scenario
+              This will be used as the unique identifier for your scenario. Spaces will be automatically replaced with hyphens (-).
             </p>
           </div>
 
