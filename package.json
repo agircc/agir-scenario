@@ -6,7 +6,6 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "test": "",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "prepare": "husky"

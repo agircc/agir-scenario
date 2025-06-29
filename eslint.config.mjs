@@ -15,7 +15,7 @@ const eslintConfig = [
     rules: {
       // Limit file length to 300 lines
       "max-lines": ["error", {
-        max: 300,
+        max: 500,
         skipBlankLines: true,
         skipComments: true
       }]

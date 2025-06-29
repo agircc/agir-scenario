@@ -114,6 +114,13 @@ export async function POST(request: NextRequest) {
     )
   } catch (error) {
     console.error('Error creating scenario:', error)
+    // Handle MongoDB duplicate key error
+    if (error && typeof error === 'object' && 'code' in error && error.code === 11000) {
+      return NextResponse.json(
+        { message: "A scenario with this filename already exists. Please choose a different name." },
+        { status: 400 }
+      )
+    }
     return NextResponse.json(
       { message: "Internal server error" },
       { status: 500 }
