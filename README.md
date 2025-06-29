@@ -1,146 +1,119 @@
 # AGIR Scenario Viewer
 
-A Next.js application for viewing and exploring workflow scenarios stored in MongoDB from YAML files.
+A Next.js application for creating, viewing and exploring workflow scenarios with interactive flowchart visualization.
 
 ## Features
 
-- 🔄 **YAML to MongoDB Sync**: Automatically sync YAML scenario files to MongoDB database
-- 📊 **Interactive Scenario Viewer**: Browse scenarios with detailed workflow visualization including tools and APIs
-- 🚀 **Next.js Interface**: Modern, responsive web interface built with Next.js and Tailwind CSS
+- 🎨 **Web-based Scenario Creation**: Create and edit scenarios directly in the web interface
+- 📊 **Interactive Flowchart Viewer**: Visualize workflow states and transitions with dynamic flowcharts
 - 🗄️ **MongoDB Storage**: Persistent storage with efficient querying and indexing
-- ⚡ **Make Commands**: Simple Makefile commands for common tasks
 
 ## Quick Start
 
 ### 1. Install Dependencies
 ```bash
 npm install
-# or
-make install
 ```
 
-### 2. Add YAML Scenarios
-Place your YAML scenario files in the `scenarios/` directory. Example structure:
-```yaml
-scenario:
-  name: "Your Scenario Name"
-  description: "Description of your workflow"
-  roles:
-    - name: "role_name"
-      description: "Role description"
-  states:
-    - name: "State Name"
-      roles: ["role_name"]
-      description: "What happens in this state"
-      tools: ["Tool1", "Tool2"]
-      inputs: ["input1", "input2"]
-      outputs: ["output1", "output2"]
-      schemas: ["schema1", "schema2"]
-```
-
-### 3. Setup MongoDB
-Ensure you have MongoDB running and create a `.env` file with your connection string:
+### 2. Setup Environment Variables
+Create a `.env.local` file in the root directory with your MongoDB connection string:
 ```bash
 MONGODB_URI=mongodb://localhost:27017/agir-scenarios
 # or for MongoDB Atlas:
 # MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/agir-scenarios
+
+NEXTAUTH_SECRET=your-secret-key-here
+NEXTAUTH_URL=http://localhost:3000
 ```
 
-### 4. Sync YAML to MongoDB
-```bash
-make sync-scenarios
-```
-
-This will sync all YAML files in the `scenarios/` directory to your MongoDB database.
-
-### 5. Start the Development Server
+### 3. Start the Development Server
 ```bash
 npm run dev
-# or
-make dev
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) to view the application.
+Visit [http://localhost:3000](http://localhost:3000) to:
+- Create new scenarios using the web interface
+- View existing scenarios with interactive flowcharts
+- Edit and manage your workflow scenarios
 
-## Available Commands
+## YAML Scenario Format
 
-| Command | Description |
-|---------|-------------|
-| `make sync-scenarios` | Sync YAML scenarios to MongoDB |
-| `make install` | Install npm dependencies |
-| `make dev` | Start development server |
-| `make build` | Build the project |
-| `make start` | Start production server |
-| `make lint` | Run linter |
-| `make clean` | Clean generated files |
-| `make help` | Show available commands |
+Scenarios are stored in YAML format with the following structure:
 
-## Project Structure
-
-```
-agir-scenario/
-├── scenarios/              # YAML scenario files
-│   └── accounting.yml      # Example scenario
-├── src/
-│   ├── app/
-│   │   ├── scenarios/      # Scenario viewer pages
-│   │   │   ├── page.tsx    # Scenarios list page
-│   │   │   └── [id]/
-│   │   │       └── page.tsx # Individual scenario detail page
-│   │   └── page.tsx        # Home page
-│   ├── lib/
-│   │   ├── mongodb.ts      # MongoDB connection utility
-│   │   └── models/
-│   │       └── Scenario.ts # Mongoose schema
-│   └── types/
-│       └── global.d.ts     # Global type declarations
-├── scripts/
-│   └── yaml-to-mongodb.js  # MongoDB sync script
-├── Makefile               # Build commands
-├── .env                   # Environment variables (MongoDB URI)
-└── package.json
+### Root Structure
+```yaml
+scenario:
+  name: "Scenario Name"
+  description: "Brief description of the workflow"
+  roles: [...]
+  states: [...]
+  transitions: [...]
 ```
 
-## Scenario File Format
+### Field Descriptions
 
-Scenarios should be defined in YAML format with the following structure:
+#### **scenario** (object)
+The root container for all scenario data.
 
-- **scenario**: Root object containing all scenario data
-  - **name**: Display name for the scenario
-  - **description**: Brief description of the workflow
-  - **roles**: Array of roles involved in the scenario
-    - **name**: Role identifier
-    - **description**: Role description
-  - **states**: Array of workflow states/steps
-    - **name**: State name
-    - **roles**: Array of role names involved in this state
-    - **description**: What happens in this state
-    - **tools**: Array of tools/systems used, each with:
-      - **name**: Tool name
-      - **apis**: Array of API endpoints or descriptions
-    - **inputs**: Array of required inputs
-    - **outputs**: Array of generated outputs
-    - **schemas**: Array of data schemas involved
+#### **name** (string)
+Display name for the scenario. This appears in the scenario list and as the title.
 
-## Development
+#### **description** (string)
+Brief description explaining the purpose and scope of the workflow scenario.
 
-The application uses:
-- **Next.js 15** - React framework
-- **TypeScript** - Type safety
-- **Tailwind CSS** - Styling
-- **MongoDB** - Document database for scenario storage
-- **Mongoose** - MongoDB object modeling
-- **Node.js** - YAML to MongoDB sync script
+#### **roles** (array of objects)
+Defines the different actors or participants in the workflow.
+```yaml
+roles:
+  - name: "role_identifier"
+    description: "What this role does in the workflow"
+```
+- **name**: Unique identifier for the role (used in states)
+- **description**: Human-readable explanation of the role's responsibilities
 
-## Contributing
+#### **states** (array of objects)
+Defines the individual steps or phases in the workflow.
+```yaml
+states:
+  - name: "State Name"
+    roles: ["role1", "role2"]
+    description: "What happens in this state"
+    tools:
+      - name: "Tool Name"
+        apis: ["API endpoint 1", "API endpoint 2"]
+    inputs: ["input1", "input2"]
+    outputs: ["output1", "output2"]
+    schemas: ["schema1", "schema2"]
+```
 
-1. Add your YAML files to the `scenarios/` directory
-2. Run `make sync-scenarios` to sync to MongoDB
-3. Test the scenarios in the web interface
-4. Submit your changes
+**State Fields:**
+- **name**: Display name for this workflow state
+- **roles**: Array of role names that participate in this state
+- **description**: Detailed explanation of what occurs in this state
+- **tools**: Array of tools/systems used in this state
+  - **name**: Name of the tool or system
+  - **apis**: Array of API endpoints or service descriptions
+- **inputs**: Array of required inputs for this state
+- **outputs**: Array of outputs produced by this state
+- **schemas**: Array of data schemas or document types involved
 
-## Requirements
+#### **transitions** (array of objects)
+Defines how the workflow moves between states.
+```yaml
+transitions:
+  - from: "Source State"
+    to: "Target State"
+    condition: "Optional condition for transition"
+```
+- **from**: Name of the source state
+- **to**: Name of the destination state  
+- **condition**: Optional condition that must be met for the transition
 
-- Node.js 18+ 
-- MongoDB (local installation or Atlas cloud)
-- npm or yarn package manager
+### Example Usage
+You can create scenarios either:
+1. **Via Web Interface**: Use the create scenario page to build workflows visually
+2. **Direct YAML**: Import YAML files that follow the above format
+
+The web interface will automatically generate flowcharts showing the states, transitions, and role interactions based on your scenario definition.
+
+
