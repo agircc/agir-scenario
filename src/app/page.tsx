@@ -170,11 +170,13 @@ export default function HomePage() {
         {isLogin ? (
           <Form {...loginForm}>
             <form
+              key="login-form"
               onSubmit={loginForm.handleSubmit(handleLogin)}
               className="mt-8 space-y-6"
             >
               <div className="space-y-4">
                 <FormField
+                  key="login-email"
                   control={loginForm.control}
                   name="email"
                   render={({ field }) => (
@@ -195,6 +197,7 @@ export default function HomePage() {
                 />
 
                 <FormField
+                  key="login-password"
                   control={loginForm.control}
                   name="password"
                   render={({ field }) => (
@@ -238,11 +241,13 @@ export default function HomePage() {
         ) : (
           <Form {...registerForm}>
             <form
+              key="register-form"
               onSubmit={registerForm.handleSubmit(handleRegister)}
               className="mt-8 space-y-6"
             >
               <div className="space-y-4">
                 <FormField
+                  key="register-name"
                   control={registerForm.control}
                   name="name"
                   render={({ field }) => (
@@ -262,6 +267,7 @@ export default function HomePage() {
                 />
 
                 <FormField
+                  key="register-email"
                   control={registerForm.control}
                   name="email"
                   render={({ field }) => (
@@ -282,6 +288,7 @@ export default function HomePage() {
                 />
 
                 <FormField
+                  key="register-password"
                   control={registerForm.control}
                   name="password"
                   render={({ field }) => (
@@ -302,6 +309,7 @@ export default function HomePage() {
                 />
 
                 <FormField
+                  key="register-confirmPassword"
                   control={registerForm.control}
                   name="confirmPassword"
                   render={({ field }) => (
