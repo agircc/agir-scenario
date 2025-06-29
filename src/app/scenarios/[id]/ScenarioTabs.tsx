@@ -11,10 +11,10 @@ interface ScenarioTabsProps {
 
 export default function ScenarioTabs({ scenario }: ScenarioTabsProps) {
   return (
-    <Tabs defaultValue="detailed" className="w-full">
+    <Tabs defaultValue="diagram" className="w-full">
       <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value="detailed">Detailed View</TabsTrigger>
         <TabsTrigger value="diagram">Flow Diagram</TabsTrigger>
+        <TabsTrigger value="detailed">Detailed View</TabsTrigger>
       </TabsList>
 
       <TabsContent value="detailed" className="mt-6">

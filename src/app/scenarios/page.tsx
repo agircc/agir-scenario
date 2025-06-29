@@ -54,7 +54,7 @@ export default async function ScenariosPage() {
   const scenarios = await getScenarios(session.user.id)
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-[calc(100vh-4rem)] bg-gray-50 py-8">
       <div className="max-w-6xl mx-auto px-4">
         <div className="mb-8 flex justify-between items-center">
           <div>
