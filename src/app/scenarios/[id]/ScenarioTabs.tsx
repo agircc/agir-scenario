@@ -3,7 +3,7 @@
 import React from 'react'
 import { type IScenario } from '@/lib/models/Scenario'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import WorkflowDiagram from '@/components/WorkflowDiagram'
+import WorkflowDiagram from '@/components/diagram/WorkflowDiagram'
 
 interface ScenarioTabsProps {
   scenario: IScenario

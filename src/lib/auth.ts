@@ -4,7 +4,6 @@ import { MongoDBAdapter } from "@auth/mongodb-adapter"
 import { MongoClient } from "mongodb"
 import bcrypt from "bcryptjs"
 
-// MongoDB 客户端
 const mongoUri = process.env.MONGODB_URI || "mongodb://localhost:27017/agentic-scenario"
 const client = new MongoClient(mongoUri)
 
@@ -23,7 +22,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
 
         try {
-          // 连接到 MongoDB
           await client.connect()
           const db = client.db()
           const user = await db.collection("users").findOne({
